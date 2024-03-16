@@ -83,7 +83,7 @@
                 <h2 class="display-5 link-body-emphasis mb-1"> {{ all_posts[0].title }} </h2>
                 <!--                <p class="blog-post-meta"> {{ all_posts[0].date }}</p>-->
                 <p class="mt-2"><em>{{ all_posts[0].blurb }} </em></p>
-                <p class="blog-post-meta"> {{ all_posts[0].body }} </p>
+                <p class="blog-post-meta"> {{ all_posts[0].body | safe }} </p>
             </article>
             <hr>
             {% endif %}
@@ -92,7 +92,7 @@
                 <h2 class="display-5 link-body-emphasis mb-1"> {{ all_posts[1].title }} </h2>
                 <!--                <p class="blog-post-meta"> {{ all_posts[1].date }}</p>-->
                 <p class="mt-2"><em>{{ all_posts[1].blurb }} </em></p>
-                <p class="blog-post-meta"> {{ all_posts[1].body }} </p>
+                <p class="blog-post-meta"> {{ all_posts[1].body | safe}} </p>
             </article>
             {% endif %}
             {% if all_posts[2] %}
@@ -100,7 +100,7 @@
                 <h2 class="display-5 link-body-emphasis mb-1"> {{ all_posts[2].title }} </h2>
                 <!--                <p class="blog-post-meta"> {{ all_posts[2].date }}</p>-->
                 <p class="mt-2"><em>{{ all_posts[2].blurb }} </em></p>
-                <p class="blog-post-meta"> {{ all_posts[2].body }} </p>
+                <p class="blog-post-meta"> {{ all_posts[2].body | safe}} </p>
             </article>
             {% endif %}
 
@@ -167,9 +167,9 @@
                 <div class="p-4">
                     <h4 class="fst-italic">Elsewhere</h4>
                     <ol class="list-unstyled">
-                        <li><a href="#">GitHub</a></li>
-                        <li><a href="#">Twitter</a></li>
-                        <li><a href="#">Facebook</a></li>
+                        <li><a href="https://www.linkedin.com/in/jasen-brown/">LinkedIn</a></li>
+<!--                        <li><a href="#">Twitter</a></li>-->
+<!--                        <li><a href="#">Facebook</a></li>-->
                     </ol>
                 </div>
             </div>
