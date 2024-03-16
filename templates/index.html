@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% block content %}
+
+<main class="container">
+    <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+        <div class="col-lg-8 px-0">
+            <h1 class="display-4 fst-italic">Custom site made with Python and Flask</h1>
+            <p class="lead my-3">I'm really enjoying diving deeper into Python, Flask, and Bootstrap as a way to develop
+                web apps.
+                This is a place where I can keep track of the things I've learned and implement different features as
+                I learn more. </p>
+            <!--      <p class="lead mb-0"><a href="#" class="text-body-emphasis fw-bold">Continue reading...</a></p>-->
+        </div>
+    </div>
+    <div class="container">
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <div id="featured" style="height: 250px;"
+                     class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="fst-italic mb-2">Learning</strong>
+                        <h3 class="mb-0">{{ all_posts[0].title }}</h3>
+                        <!--          <div class="mb-1 text-body-secondary">Mar 2024</div>-->
+                        <p class="card-text mb-auto">{{ all_posts[0].blurb }}</p>
+                        <a href="#latest" class="icon-link gap-1 icon-link-hover stretched-link">
+                            Continue below
+                            <svg class="bi">
+                                <use xlink:href="#chevron-right"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                        <!--                    <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg"-->
+                        <!--                         role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice"-->
+                        <!--                         focusable="false"><title>Placeholder</title>-->
+                        <!--                        <rect width="100%" height="100%" fill="#55595c"/>-->
+                        <!--                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>-->
+                        <!--                    </svg>-->
+                        <img class="rounded-2" src="{{ url_for('static', filename='images/python.jpg') }}"
+                             alt="draft board"
+                             style="height: 250px; width: 200px; object-fit: cover; object-position: center;"
+                             loading="lazy"
+                        >
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div id="project" style="height: 250px;"
+                     class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="fst-italic mb-2">Web App</strong>
+                        <h3 class="mb-0">Sleeper Tiers</h3>
+                        <!--          <div class="mb-1 text-body-secondary">Nov 11</div>-->
+                        <p class="mb-auto colored-background-text">Fun project to live track drafts and keep track of
+                            player tiers for fantasy
+                            football on Sleeper.com. Flask/Bootstrap/APIs. </p>
+                        <a href="https://sleepertiers.azurewebsites.net/"
+                           class="icon-link gap-1 icon-link-hover stretched-link">
+                            Check it out
+                            <svg class="bi">
+                                <use xlink:href="#chevron-right"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                        <div class="container rounded-2" style="width: 200px;">
+                            <img class="rounded-2" src="{{ url_for('static', filename='images/sleeper_example.png') }}"
+                                 alt="draft board" loading="lazy" style="height: 250px; width: 400px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-5">
+        <div class="col-md-8">
+            <h3 class="pb-4 mb-4 fst-italic border-bottom">
+                Updates
+            </h3>
+            {% if all_posts[0] %}
+            <article id="latest" class="blog-post">
+                <h2 class="display-5 link-body-emphasis mb-1"> {{ all_posts[0].title }} </h2>
+                <!--                <p class="blog-post-meta"> {{ all_posts[0].date }}</p>-->
+                <p class="mt-2"><em>{{ all_posts[0].blurb }} </em></p>
+                <p class="blog-post-meta"> {{ all_posts[0].body }} </p>
+            </article>
+            <hr>
+            {% endif %}
+            {% if all_posts[1] %}
+            <article class="blog-post">
+                <h2 class="display-5 link-body-emphasis mb-1"> {{ all_posts[1].title }} </h2>
+                <!--                <p class="blog-post-meta"> {{ all_posts[1].date }}</p>-->
+                <p class="mt-2"><em>{{ all_posts[1].blurb }} </em></p>
+                <p class="blog-post-meta"> {{ all_posts[1].body }} </p>
+            </article>
+            {% endif %}
+            {% if all_posts[2] %}
+            <article class="blog-post">
+                <h2 class="display-5 link-body-emphasis mb-1"> {{ all_posts[2].title }} </h2>
+                <!--                <p class="blog-post-meta"> {{ all_posts[2].date }}</p>-->
+                <p class="mt-2"><em>{{ all_posts[2].blurb }} </em></p>
+                <p class="blog-post-meta"> {{ all_posts[2].body }} </p>
+            </article>
+            {% endif %}
+
+        </div>
+
+        <div class="col-md-4">
+            <div class="position-sticky" style="top: 2rem;">
+                <div>
+                    <h4 class="fst-italic">To Do Items</h4>
+                    <ul class="list-unstyled">
+                        <li>
+                            <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top"
+                               href="#">
+                                <!--                                <svg class="bd-placeholder-img" width="100%" height="96"-->
+                                <!--                                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true"-->
+                                <!--                                     preserveAspectRatio="xMidYMid slice" focusable="false">-->
+                                <!--                                    <rect width="100%" height="100%" fill="#777"/>-->
+                                <!--                                </svg>-->
+                                <div class="col-lg-8">
+                                    <h6 class="mb-0">Ability and Delete Posts</h6>
+                                    <small class="text-body-secondary">January 15, 2024</small>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top"
+                               href="#">
+                                <!--                                <svg class="bd-placeholder-img" width="100%" height="96"-->
+                                <!--                                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true"-->
+                                <!--                                     preserveAspectRatio="xMidYMid slice" focusable="false">-->
+                                <!--                                    <rect width="100%" height="100%" fill="#777"/>-->
+                                <!--                                </svg>-->
+                                <div class="col-lg-8">
+                                    <h6 class="mb-0">Authentication</h6>
+                                    <small class="text-body-secondary">Need to set up authentication so I can easily
+                                        log in and add posts/edit from the web app.</small>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top"
+                               href="#">
+                                <!--                                <svg class="bd-placeholder-img" width="100%" height="96"-->
+                                <!--                                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true"-->
+                                <!--                                     preserveAspectRatio="xMidYMid slice" focusable="false">-->
+                                <!--                                    <rect width="100%" height="100%" fill="#777"/>-->
+                                <!--                                </svg>-->
+
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="p-4">
+                    <h4 class="fst-italic">Archives</h4>
+                    <ol class="list-unstyled mb-0">
+                        {% for post in all_posts %}
+                        <li><a href="{{ url_for('show_post', post_id=post.id) }}">{{ post.title }}</a></li>
+
+                        {% endfor %}
+                    </ol>
+                </div>
+
+                <div class="p-4">
+                    <h4 class="fst-italic">Elsewhere</h4>
+                    <ol class="list-unstyled">
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Facebook</a></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+{% endblock %}

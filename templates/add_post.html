@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+{% from 'bootstrap5/form.html' import render_form %}
+
+
+<div class="container p-0">
+    <div class="row justify-content-center"> <!-- Center the content horizontally -->
+        <div class="col-md-6"> <!-- Adjust the column width as needed -->
+            <h1>Add a post</h1>
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                {% for message in messages %}
+                <p class="text-info">{{ message }}</p>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+            {{ render_form(form) }}
+
+            <p>Image:</p>
+            <input type="file" name="image_file">
+
+            <p>Snippet:</p>
+            <textarea id="snip" name="snip" rows="4" cols="73">
+            </textarea>
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
