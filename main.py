@@ -21,7 +21,7 @@ class Base(DeclarativeBase):
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = environ.get('BLOG_KEY')
+app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload size
