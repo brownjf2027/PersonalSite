@@ -1,5 +1,5 @@
 import datetime
-
+from os import environ
 from flask import Flask, request, render_template, redirect, url_for, flash, make_response, jsonify
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
@@ -21,7 +21,7 @@ class Base(DeclarativeBase):
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret-key-goes-here'
+app.config['SECRET_KEY'] = environ.get('FLASK_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload size
