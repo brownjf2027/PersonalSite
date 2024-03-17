@@ -111,12 +111,6 @@ def post():
             post.blurb = form.blurb.data
             post.body = form.body.data
 
-            print(f"post_id = {post.id}"
-                  f"post.date = {post.date}"
-                  f"post.title = {post.title}"
-                  f"post.blurb = {post.blurb}"
-                  f"post.body = {post.body}")
-
             db.session.commit()
             flash('Saved!')
             return redirect(url_for('show_post', post_id=post.id, logged_in=current_user.is_authenticated))
@@ -151,7 +145,6 @@ def post():
         # If post ID is provided, fetch the existing post data for editing
         post = Post.query.get_or_404(post_id)
         form.post_id.data = post.id
-        print(post_id)
         form.date.data = post.date
         form.title.data = post.title
         form.blurb.data = post.blurb
