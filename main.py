@@ -44,9 +44,9 @@ class User(UserMixin, db.Model):
 class Post(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     date: Mapped[datetime.date] = mapped_column(Date)
-    title: Mapped[str] = mapped_column(String(100))
-    blurb: Mapped[str] = mapped_column(String(250))
-    body: Mapped[str] = mapped_column(String(1000))
+    title: Mapped[str] = mapped_column(String(250))
+    blurb: Mapped[str] = mapped_column(String(500))
+    body: Mapped[str] = mapped_column(String(2000))
 
 
 class Image(db.Model):
@@ -185,13 +185,13 @@ def delete_post(post_id):
     db.session.delete(requested_post)
     db.session.commit()
     flash("Deleted!")
-    all_posts = Post.query.order_by(Post.id.desc()).all()
+    all_posts = Post.query.order_by(Post.date.desc()).all()
     return redirect(url_for('post', logged_in=current_user.is_authenticated))
 
 
 @app.route('/')
 def home():
-    all_posts = Post.query.order_by(Post.id.desc()).all()
+    all_posts = Post.query.order_by(Post.date.desc()).all()
     todo_list = get_todo_list()
     # all_images = Post.query.order_by(Image.id.desc()).all()
 

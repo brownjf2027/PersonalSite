@@ -38,13 +38,19 @@ border-color: #ffffff;
 }
 
 #featured {
-background-color: var(--bs-secondary); /* Example: Override featured section color for dark mode */
---bs-border-color: var(--bs-secondary); /* Adjust border color if needed */
-  }
+background: rgb(192,108,132);
+background: -moz-linear-gradient(90deg, rgba(192,108,132,1) 16%, rgba(221,175,188,1) 100%);
+background: -webkit-linear-gradient(90deg, rgba(192,108,132,1) 16%, rgba(221,175,188,1) 100%);
+background: linear-gradient(90deg, rgba(192,108,132,1) 16%, rgba(221,175,188,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#c06c84",endColorstr="#ddafbc",GradientType=1);
+}
 
 #project {
-background-color: var(--bs-info); /* Example: Override project section color for dark mode */
---bs-border-color: var(--bs-info); /* Adjust border color if needed */
+background: rgb(246,114,128);
+background: -moz-linear-gradient(90deg, rgba(246,114,128,1) 16%, rgba(250,179,187,1) 100%);
+background: -webkit-linear-gradient(90deg, rgba(246,114,128,1) 16%, rgba(250,179,187,1) 100%);
+background: linear-gradient(90deg, rgba(246,114,128,1) 16%, rgba(250,179,187,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f67280",endColorstr="#fab3bb",GradientType=1);
 }
 
 .bd-placeholder-img {
@@ -179,7 +185,10 @@ text-decoration-color: #fff;
 	background: linear-gradient(45deg, #355C7D, #6C5B7B, #C06C84);
 	background-size: 300% 400%;
 	animation: gradient 15s ease infinite;
-	'height: 100vh;
+	font-size: 1.25rem;
+	--bs-navbar-color: rgba(255, 255, 255, 0.75);
+    --bs-navbar-hover-color: #fff;
+    --bs-navbar-active-color: #fff;
 }
 
 body {
