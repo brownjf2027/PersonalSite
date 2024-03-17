@@ -29,7 +29,7 @@ app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
 #     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
 # else:
 #     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URI")
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URI")
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("DB_URI")
 if app.config['SQLALCHEMY_DATABASE_URI'] is None:
     raise ValueError("DB_URI is not set in the environment variables.")
 app.config['UPLOAD_FOLDER'] = 'uploads'
