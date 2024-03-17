@@ -38,7 +38,7 @@ db = SQLAlchemy(app)
 class User(UserMixin, db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     email: Mapped[str] = mapped_column(String(100), unique=True)
-    password: Mapped[str] = mapped_column(String(100))
+    password: Mapped[str] = mapped_column(String(500))
     name: Mapped[str] = mapped_column(String(1000))
 
 
