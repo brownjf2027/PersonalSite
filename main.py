@@ -27,10 +27,10 @@ bootstrap = Bootstrap5(app)
 app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
 # CONNECT TO DB
 # if os.environ.get("LOCAL") == "True":
-#     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
 # else:
 #     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URI")
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("DB_URI")
+# app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("DB_URI")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # silence the deprecation warning
 db = SQLAlchemy(app)
 
@@ -244,7 +244,8 @@ def register():
 
         db.session.add(new_user)
         db.session.commit()
-        return render_template("index.html", logged_in=current_user.is_authenticated)
+        all_posts = Post.query.order_by(Post.id.desc()).all()
+        return render_template("index.html", all_posts=all_posts, logged_in=current_user.is_authenticated)
     return render_template("register.html")
 
 
