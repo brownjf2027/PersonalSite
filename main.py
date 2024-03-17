@@ -1,8 +1,9 @@
 import datetime
+import os
 from os import environ
 from flask import Flask, request, render_template, redirect, url_for, flash, make_response, jsonify
-from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
+from flask_bootstrap import Bootstrap5
 from flask_wtf import FlaskForm
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
@@ -21,15 +22,38 @@ class Base(DeclarativeBase):
 
 
 app = Flask(__name__)
+bootstrap = Bootstrap5(app)
 app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
+# CONNECT TO DB
+# if os.environ.get("LOCAL") == "True":
+#     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
+# else:
+#     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URI")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URI")
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload size
-# Initialize Flask-Bootstrap
-bootstrap = Bootstrap(app)
 
-db = SQLAlchemy(model_class=Base)
-db.init_app(app)
+
+db = SQLAlchemy(app)
+# db = SQLAlchemy(model_class=Base)
+# db.init_app(app)
+
+# Configure Flask-Login's Login Manager
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+
+# Create a user_loader callback
+@login_manager.user_loader
+def load_user(user_id):
+    return db.get_or_404(User, user_id)
+
+
+class User(UserMixin, db.Model):
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    email: Mapped[str] = mapped_column(String(100), unique=True)
+    password: Mapped[str] = mapped_column(String(100))
+    name: Mapped[str] = mapped_column(String(1000))
 
 
 class Post(db.Model):
@@ -60,9 +84,14 @@ with app.app_context():
     for post in posts:
         print(post.title)
 
+    users = User.query.all()
 
-#     # db.drop_all()
-#     # users = User.query.all()
+    # Printing out user information
+    for user in users:
+        print("User ID:", user.id)
+        print("Name:", user.name)
+        print("Email:", user.email)
+        print("Password:", user.password)
 
 
 class PostForm(FlaskForm):
@@ -75,6 +104,7 @@ class PostForm(FlaskForm):
 
 
 @app.route("/post", methods=['GET', 'POST'])
+@login_required
 def post():
     post_id = request.args.get('edit_post_id')
     form = PostForm()
@@ -97,7 +127,7 @@ def post():
 
             db.session.commit()
             flash('Saved!')
-            return redirect(url_for('show_post', post_id=post.id))
+            return redirect(url_for('show_post', post_id=post.id, logged_in=current_user.is_authenticated))
 
         else:
             new_post = Post(
@@ -122,7 +152,7 @@ def post():
                     db.session.commit()
 
             flash('Saved!')
-            return redirect(url_for('post', post_id=new_post.id))  # Redirect with new_post.id
+            return redirect(url_for('post', post_id=new_post.id, logged_in=current_user.is_authenticated))  # Redirect with new_post.id
 
     if post_id:
         # If post ID is provided, fetch the existing post data for editing
@@ -134,7 +164,7 @@ def post():
         form.blurb.data = post.blurb
         form.body.data = post.body
 
-    return render_template("add_post.html", form=form)
+    return render_template("add_post.html", form=form, logged_in=current_user.is_authenticated)
 
 
 def allowed_file(filename):
@@ -152,17 +182,18 @@ def show_post(post_id):
     else:
         image_data = None
 
-    return render_template("post.html", post=requested_post, image=image_data)
+    return render_template("post.html", post=requested_post, image=image_data, logged_in=current_user.is_authenticated)
 
 
 @app.route("/delete/<int:post_id>")
+@login_required
 def delete_post(post_id):
     requested_post = Post.query.filter_by(id=post_id).first()
     db.session.delete(requested_post)
     db.session.commit()
     flash("Deleted!")
     all_posts = Post.query.order_by(Post.id.desc()).all()
-    return redirect(url_for('post'))
+    return redirect(url_for('post', logged_in=current_user.is_authenticated))
 
 
 @app.route('/')
@@ -170,7 +201,51 @@ def home():
     all_posts = Post.query.order_by(Post.id.desc()).all()
     # all_images = Post.query.order_by(Image.id.desc()).all()
 
-    return render_template("index.html", all_posts=all_posts)
+    return render_template("index.html", all_posts=all_posts, logged_in=current_user.is_authenticated)
+
+
+@app.route('/logout', methods=["GET"])
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    # check_password_hash(pwhash, password)
+    if request.method == "POST":
+        user_email = request.form.get("email")
+        user_password = request.form.get("password")
+
+        # Querying the user based on the provided email
+        user_check = User.query.filter_by(email=user_email).first()
+
+        if user_check:
+            if check_password_hash(user_check.password, user_password):
+                login_user(user_check)
+                return redirect(url_for("home", user_id=user_check.id, logged_in=current_user.is_authenticated))
+            else:
+                flash("Incorrect password, please try again.")
+                return render_template("login.html", logged_in=current_user.is_authenticated)
+        else:
+            flash("That email does not exist, please try again.")
+            return render_template("login.html", logged_in=current_user.is_authenticated)
+    return render_template("login.html", logged_in=current_user.is_authenticated)
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == "POST":
+        new_user = User(
+            name=request.form.get("name"),
+            email=request.form.get("email"),
+            password=generate_password_hash(request.form.get("password"), method='scrypt', salt_length=SALT_ROUNDS)
+        )
+
+        db.session.add(new_user)
+        db.session.commit()
+        return render_template("profile.html", name=new_user.name, logged_in=current_user.is_authenticated)
+    return render_template("register.html")
 
 
 if __name__ == "__main__":

@@ -81,7 +81,7 @@
             {% if all_posts[0] %}
             <article id="latest" class="blog-post">
                 <h2 class="display-5 link-body-emphasis mb-1"> {{ all_posts[0].title }} </h2>
-                <!--                <p class="blog-post-meta"> {{ all_posts[0].date }}</p>-->
+                                <p class="blog-post-meta"> {{ all_posts[0].date.strftime('%b %d %Y') }}</p>
                 <p class="mt-2"><em>{{ all_posts[0].blurb }} </em></p>
                 <p class="blog-post-meta"> {{ all_posts[0].body | safe }} </p>
             </article>
@@ -90,7 +90,7 @@
             {% if all_posts[1] %}
             <article class="blog-post">
                 <h2 class="display-5 link-body-emphasis mb-1"> {{ all_posts[1].title }} </h2>
-                <!--                <p class="blog-post-meta"> {{ all_posts[1].date }}</p>-->
+                                <p class="blog-post-meta"> {{ all_posts[1].date.strftime('%b %d %Y') }}</p>
                 <p class="mt-2"><em>{{ all_posts[1].blurb }} </em></p>
                 <p class="blog-post-meta"> {{ all_posts[1].body | safe}} </p>
             </article>
@@ -98,7 +98,7 @@
             {% if all_posts[2] %}
             <article class="blog-post">
                 <h2 class="display-5 link-body-emphasis mb-1"> {{ all_posts[2].title }} </h2>
-                <!--                <p class="blog-post-meta"> {{ all_posts[2].date }}</p>-->
+                                <p class="blog-post-meta"> {{ all_posts[2].date.strftime('%b %d %Y') }}</p>
                 <p class="mt-2"><em>{{ all_posts[2].blurb }} </em></p>
                 <p class="blog-post-meta"> {{ all_posts[2].body | safe}} </p>
             </article>
