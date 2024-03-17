@@ -17,7 +17,6 @@ from wtforms.validators import DataRequired, ValidationError
 
 SALT_ROUNDS = 16
 
-
 # class Base(DeclarativeBase):
 #     pass
 
@@ -79,7 +78,6 @@ with app.app_context():
         print("Name:", user.name)
         print("Email:", user.email)
         print("Password:", user.password)
-
 
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload size
