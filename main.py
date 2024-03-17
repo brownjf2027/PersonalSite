@@ -1,5 +1,6 @@
 import datetime
 import os
+import logging
 from os import environ
 from flask import Flask, request, render_template, redirect, url_for, flash, make_response, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -17,11 +18,12 @@ from wtforms.validators import DataRequired, ValidationError
 SALT_ROUNDS = 16
 
 
-class Base(DeclarativeBase):
-    pass
+# class Base(DeclarativeBase):
+#     pass
 
 
 app = Flask(__name__)
+app.logger.setLevel(logging.DEBUG)
 bootstrap = Bootstrap5(app)
 app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
 # CONNECT TO DB
@@ -30,22 +32,8 @@ app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
 # else:
 #     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URI")
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("DB_URI")
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation warning
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # silence the deprecation warning
 db = SQLAlchemy(app)
-
-app.config['UPLOAD_FOLDER'] = 'uploads'
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload size
-
-
-# Configure Flask-Login's Login Manager
-login_manager = LoginManager()
-login_manager.init_app(app)
-
-
-# Create a user_loader callback
-@login_manager.user_loader
-def load_user(user_id):
-    return db.get_or_404(User, user_id)
 
 
 class User(UserMixin, db.Model):
@@ -91,6 +79,20 @@ with app.app_context():
         print("Name:", user.name)
         print("Email:", user.email)
         print("Password:", user.password)
+
+
+app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload size
+
+# Configure Flask-Login's Login Manager
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+
+# Create a user_loader callback
+@login_manager.user_loader
+def load_user(user_id):
+    return db.get_or_404(User, user_id)
 
 
 class PostForm(FlaskForm):
@@ -151,7 +153,8 @@ def post():
                     db.session.commit()
 
             flash('Saved!')
-            return redirect(url_for('post', post_id=new_post.id, logged_in=current_user.is_authenticated))  # Redirect with new_post.id
+            return redirect(url_for('post', post_id=new_post.id,
+                                    logged_in=current_user.is_authenticated))  # Redirect with new_post.id
 
     if post_id:
         # If post ID is provided, fetch the existing post data for editing
@@ -243,7 +246,7 @@ def register():
 
         db.session.add(new_user)
         db.session.commit()
-        return render_template("profile.html", name=new_user.name, logged_in=current_user.is_authenticated)
+        return render_template("index.html", logged_in=current_user.is_authenticated)
     return render_template("register.html")
 
 
