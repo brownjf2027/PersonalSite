@@ -30,15 +30,12 @@ app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
 # else:
 #     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URI")
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("DB_URI")
-if app.config['SQLALCHEMY_DATABASE_URI'] is None:
-    raise ValueError("DB_URI is not set in the environment variables.")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation warning
+db = SQLAlchemy(app)
+
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload size
 
-
-db = SQLAlchemy(app)
-# db = SQLAlchemy(model_class=Base)
-# db.init_app(app)
 
 # Configure Flask-Login's Login Manager
 login_manager = LoginManager()
