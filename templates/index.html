@@ -2,7 +2,7 @@
 {% block content %}
 
 <main class="container">
-    <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+    <div id="big-box" class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
         <div class="col-lg-8 px-0">
             <h1 class="display-4 fst-italic">Custom site made with Python and Flask</h1>
             <p class="lead my-3">I'm really enjoying diving deeper into Python, Flask, and Bootstrap as a way to develop
@@ -111,46 +111,17 @@
                 <div>
                     <h4 class="fst-italic">To Do Items</h4>
                     <ul class="list-unstyled">
+                        {% for todo in todo_list %}
                         <li>
                             <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top"
                                href="#">
-                                <!--                                <svg class="bd-placeholder-img" width="100%" height="96"-->
-                                <!--                                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true"-->
-                                <!--                                     preserveAspectRatio="xMidYMid slice" focusable="false">-->
-                                <!--                                    <rect width="100%" height="100%" fill="#777"/>-->
-                                <!--                                </svg>-->
                                 <div class="col-lg-8">
-                                    <h6 class="mb-0">Ability and Delete Posts</h6>
-                                    <small class="text-body-secondary">January 15, 2024</small>
+                                    <h6 class="mb-0">{{ todo['title'] }}</h6>
+                                    <small class="text-body-secondary">{{ todo['description'] }}</small>
                                 </div>
                             </a>
                         </li>
-                        <li>
-                            <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top"
-                               href="#">
-                                <!--                                <svg class="bd-placeholder-img" width="100%" height="96"-->
-                                <!--                                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true"-->
-                                <!--                                     preserveAspectRatio="xMidYMid slice" focusable="false">-->
-                                <!--                                    <rect width="100%" height="100%" fill="#777"/>-->
-                                <!--                                </svg>-->
-                                <div class="col-lg-8">
-                                    <h6 class="mb-0">Authentication</h6>
-                                    <small class="text-body-secondary">Need to set up authentication so I can easily
-                                        log in and add posts/edit from the web app.</small>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top"
-                               href="#">
-                                <!--                                <svg class="bd-placeholder-img" width="100%" height="96"-->
-                                <!--                                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true"-->
-                                <!--                                     preserveAspectRatio="xMidYMid slice" focusable="false">-->
-                                <!--                                    <rect width="100%" height="100%" fill="#777"/>-->
-                                <!--                                </svg>-->
-
-                            </a>
-                        </li>
+                        {% endfor %}
                     </ul>
                 </div>
 

@@ -1,5 +1,6 @@
 import datetime
 import os
+import json
 import logging
 from os import environ
 from flask import Flask, request, render_template, redirect, url_for, flash, make_response, jsonify
@@ -26,10 +27,8 @@ app.logger.setLevel(logging.DEBUG)
 bootstrap = Bootstrap5(app)
 app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
 # CONNECT TO DB
-# if os.environ.get("LOCAL") == "True":
+
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
-# else:
-#     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URI")
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("DB_URI")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # silence the deprecation warning
 db = SQLAlchemy(app)
@@ -72,12 +71,6 @@ with app.app_context():
 
     users = User.query.all()
 
-    # Printing out user information
-    for user in users:
-        print("User ID:", user.id)
-        print("Name:", user.name)
-        print("Email:", user.email)
-        print("Password:", user.password)
 
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload size
@@ -199,9 +192,10 @@ def delete_post(post_id):
 @app.route('/')
 def home():
     all_posts = Post.query.order_by(Post.id.desc()).all()
+    todo_list = get_todo_list()
     # all_images = Post.query.order_by(Image.id.desc()).all()
 
-    return render_template("index.html", all_posts=all_posts, logged_in=current_user.is_authenticated)
+    return render_template("index.html", todo_list=todo_list, all_posts=all_posts, logged_in=current_user.is_authenticated)
 
 
 @app.route('/logout', methods=["GET"])
@@ -233,20 +227,53 @@ def login():
     return render_template("login.html", logged_in=current_user.is_authenticated)
 
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == "POST":
-        new_user = User(
-            name=request.form.get("name"),
-            email=request.form.get("email"),
-            password=generate_password_hash(request.form.get("password"), method='scrypt', salt_length=SALT_ROUNDS)
-        )
+# @app.route('/register', methods=['GET', 'POST'])
+# def register():
+#     if request.method == "POST":
+#         new_user = User(
+#             name=request.form.get("name"),
+#             email=request.form.get("email"),
+#             password=generate_password_hash(request.form.get("password"), method='scrypt', salt_length=SALT_ROUNDS)
+#         )
+#
+#         db.session.add(new_user)
+#         db.session.commit()
+#         all_posts = Post.query.order_by(Post.id.desc()).all()
+#         return render_template("index.html", all_posts=all_posts, logged_in=current_user.is_authenticated)
+#     return render_template("register.html")
 
-        db.session.add(new_user)
-        db.session.commit()
-        all_posts = Post.query.order_by(Post.id.desc()).all()
-        return render_template("index.html", all_posts=all_posts, logged_in=current_user.is_authenticated)
-    return render_template("register.html")
+
+# Define the filename for the JSON file
+TODO_FILE = 'static/files/todo.json'
+
+
+def load_todo_list():
+    """Load the to-do list from the JSON file."""
+    try:
+        with open(TODO_FILE, 'r') as file:
+            todo_list = json.load(file)
+    except FileNotFoundError:
+        # If the file doesn't exist yet, return an empty list
+        todo_list = []
+    return todo_list
+
+
+def save_todo_list(todo_list):
+    """Save the to-do list to the JSON file."""
+    with open(TODO_FILE, 'w') as file:
+        json.dump(todo_list, file, indent=4)
+
+
+def add_todo_item(title, description):
+    """Add a to-do item to the to-do list."""
+    todo_list = load_todo_list()
+    todo_list.append({'title': title, 'description': description})
+    save_todo_list(todo_list)
+
+
+def get_todo_list():
+    """Get the entire to-do list."""
+    return load_todo_list()
 
 
 if __name__ == "__main__":

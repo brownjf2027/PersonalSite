@@ -174,3 +174,26 @@ text-decoration-color: #fff;
     --bs-btn-focus-box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .2);
   }
 }
+
+.navbar {
+	background: linear-gradient(45deg, #355C7D, #6C5B7B, #C06C84);
+	background-size: 300% 400%;
+	animation: gradient 15s ease infinite;
+	'height: 100vh;
+}
+
+body {
+'background: #748EA4;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
