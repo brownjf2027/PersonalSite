@@ -1,20 +1,18 @@
 import datetime
-import os
 import json
 import logging
 from os import environ
-from flask import Flask, request, render_template, redirect, url_for, flash, make_response, jsonify
-from flask_sqlalchemy import SQLAlchemy
+
+from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_bootstrap import Bootstrap5
-from flask_wtf import FlaskForm
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import Integer, String, Date, LargeBinary
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
-from werkzeug.utils import secure_filename
-from wtforms import StringField, SubmitField, FileField, TextAreaField, EmailField, DateField, HiddenField
-from wtforms.validators import DataRequired, ValidationError
+from flask_sqlalchemy import SQLAlchemy
+from flask_wtf import FlaskForm
+from sqlalchemy import Integer, String, Date, LargeBinary
+from sqlalchemy.orm import Mapped, mapped_column
+from werkzeug.security import check_password_hash
+from wtforms import StringField, SubmitField, TextAreaField, DateField, HiddenField
+from wtforms.validators import DataRequired
 
 SALT_ROUNDS = 16
 
@@ -188,7 +186,8 @@ def home():
     todo_list = get_todo_list()
     # all_images = Post.query.order_by(Image.id.desc()).all()
 
-    return render_template("index.html", todo_list=todo_list, all_posts=all_posts, logged_in=current_user.is_authenticated)
+    return render_template("index.html", todo_list=todo_list, all_posts=all_posts,
+                           logged_in=current_user.is_authenticated)
 
 
 @app.route('/logout', methods=["GET"])
