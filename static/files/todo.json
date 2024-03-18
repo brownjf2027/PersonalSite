@@ -1,6 +1,10 @@
 [
     {
-        "title": "Easier Entry for To Do",
+        "title": "Project page",
+        "description": "Show samples of other coding projects: Geocoding and automatic customer mapping, custom apps for work, games, etc."
+    },
+    {
+        "title": "Simplify To Do",
         "description": "Need to add within the App once logged in."
     },
     {
@@ -8,11 +12,7 @@
         "description": "Will most likely be on-going for a bit."
     },
     {
-        "title": "'23 Stats for Sleeper Tiers app",
-        "description": "Matplot or potentially Azure AI/Machine Learning"
-    },
-    {
-        "title": "Finish writing articles back in from prior db",
-        "description": "Need to copy over what was lost in db update"
+        "title": "2023 Stats for Sleeper Tiers app",
+        "description": "Matplot practice & potentially Azure AI/Machine Learning"
     }
 ]
