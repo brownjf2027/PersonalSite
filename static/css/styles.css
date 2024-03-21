@@ -191,6 +191,19 @@ text-decoration-color: #fff;
     --bs-navbar-active-color: #fff;
 }
 
+.card {
+    width: 12rem;
+}
+
+.card-text {
+    font-size: 12px;
+    margin-bottom: 0px;
+}
+
+.card-text-school {
+    margin-bottom: 0px;
+}
+
 body {
 'background: #748EA4;
 }

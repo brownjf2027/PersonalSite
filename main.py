@@ -3,6 +3,10 @@ import json
 import logging
 from os import environ
 
+import openpyxl
+from ncaa import get_games
+import re
+
 from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_bootstrap import Bootstrap5
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
@@ -11,7 +15,7 @@ from flask_wtf import FlaskForm
 from sqlalchemy import Integer, String, Date, LargeBinary
 from sqlalchemy.orm import Mapped, mapped_column
 from werkzeug.security import check_password_hash
-from wtforms import StringField, SubmitField, TextAreaField, DateField, HiddenField
+from wtforms import StringField, SubmitField, TextAreaField, DateField, HiddenField, FileField
 from wtforms.validators import DataRequired
 
 SALT_ROUNDS = 16
@@ -69,7 +73,6 @@ with app.app_context():
 
     users = User.query.all()
 
-
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload size
 
@@ -91,6 +94,11 @@ class PostForm(FlaskForm):
     blurb = TextAreaField('Blurb:', validators=[DataRequired()])
     body = TextAreaField('Body:', validators=[DataRequired()], render_kw={"style": "height: 250px;"})
     submit = SubmitField("Submit Post")
+
+
+class XlForm(FlaskForm):
+    excel_doc = FileField(f"Choose Excel file for today's games", validators=[DataRequired()])
+    submit = SubmitField('Upload Sheet')
 
 
 @app.route("/post", methods=['GET', 'POST'])
@@ -219,20 +227,83 @@ def login():
     return render_template("login.html", logged_in=current_user.is_authenticated)
 
 
-# @app.route('/register', methods=['GET', 'POST'])
-# def register():
-#     if request.method == "POST":
-#         new_user = User(
-#             name=request.form.get("name"),
-#             email=request.form.get("email"),
-#             password=generate_password_hash(request.form.get("password"), method='scrypt', salt_length=SALT_ROUNDS)
-#         )
-#
-#         db.session.add(new_user)
-#         db.session.commit()
-#         all_posts = Post.query.order_by(Post.id.desc()).all()
-#         return render_template("index.html", all_posts=all_posts, logged_in=current_user.is_authenticated)
-#     return render_template("register.html")
+@app.route("/ncaa", methods=["GET", "POST"])
+def ncaa():
+    form = XlForm()
+    picks = []
+    games = []
+    if form.validate_on_submit():
+        xl_file = form.excel_doc.data
+
+        try:
+            # Open the Excel file
+            wb = openpyxl.load_workbook(xl_file)
+
+            # Select the active worksheet
+            sheet = wb.active
+
+            # Grab items from columns D (column 4) and H (column 8) starting at the specified rows
+            column_data_D = [sheet.cell(row=i, column=4).value for i in range(18, 37)]
+            column_data_H = [sheet.cell(row=i, column=8).value for i in range(18, 37)]
+            column_data = zip(column_data_D, column_data_H)
+            # Remove numbering and store in a list
+            cleaned_column_data = []
+            for row in column_data:
+                cleaned_row = []
+                for item in row:
+                    if isinstance(item, str) and '. ' in item:
+                        cleaned_item = item.split('. ')[1]
+                    else:
+                        cleaned_item = item
+                    cleaned_row.append(cleaned_item)
+                cleaned_column_data.append(cleaned_row)
+
+            picks = cleaned_column_data
+
+            import re
+
+            # Flatten the list of lists into a single list of strings
+            flattened_picks = [str(item) for sublist in picks for item in sublist]
+
+            # Replace "Uconn" with "Connecticut"
+            flattened_picks = ["Connecticut" if pick == "Uconn" else pick for pick in flattened_picks]
+            flattened_picks = ["Colorado St." if pick == "Virginia/Colorado St." else pick for pick in flattened_picks]
+            # Replace "State" with "St."
+            flattened_picks = [re.sub(r'\bState\b', 'St.', pick) for pick in flattened_picks]
+
+            # Join picks into a comma-separated string
+            picks_str = ",".join(flattened_picks)
+
+            return redirect(url_for("ncaa_scoreboard", picks=picks_str))
+
+        except Exception as e:
+            flash("Error.")
+            print(f"Exception: {e}")
+            return render_template("ncaa.html", form=form)
+
+    return render_template("ncaa.html", form=form)
+
+
+@app.route("/ncaa-scoreboard/", methods=["GET", "POST"])
+def ncaa_scoreboard():
+    my_picks_str = request.args.get('picks')
+    my_picks = my_picks_str.split(',') if my_picks_str else []
+    games = get_games()
+    for game in games:
+        if game['game']['home']['score'] == "":
+            game['game']['home']['score'] = 0
+        else:
+            game['game']['home']['score'] = int(game['game']['home']['score'])
+
+        if game['game']['away']['score'] == "":
+            game['game']['away']['score'] = 0
+        else:
+            game['game']['away']['score'] = int(game['game']['away']['score'])
+
+        game['game']['home']['seed'] = int(game['game']['home']['seed'])
+        game['game']['away']['seed'] = int(game['game']['away']['seed'])
+
+    return render_template("ncaa_scoreboard.html", picks=my_picks, games=games)
 
 
 # Define the filename for the JSON file
