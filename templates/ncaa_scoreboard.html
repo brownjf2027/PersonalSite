@@ -171,7 +171,11 @@
                                     {% endif %}
                                 </div>
                                 <div class="col-3">
+                                    {% if game.game.home.score > game.game.away.score %}
+                                    <p class="card-text-school" style="font-weight: bolder">{{ game.game.home.score }}</p>
+                                    {% else %}
                                     <p class="card-text-school">{{ game.game.home.score }}</p>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="row p-0">
@@ -197,7 +201,11 @@
                                     {% endif %}
                                 </div>
                                 <div class="col-3">
+                                    {% if game.game.away.score > game.game.home.score %}
+                                    <p class="card-text-school" style="font-weight: bolder">{{ game.game.away.score }}</p>
+                                    {% else %}
                                     <p class="card-text-school"> {{ game.game.away.score }}</p>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
