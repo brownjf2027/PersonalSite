@@ -319,8 +319,8 @@
         location.reload(); // Reload the page
     };
 
-    // Refresh the page every 30 seconds
-    const refreshInterval = setInterval(refreshPage, 30000);
+    // Refresh the page every minute
+    const refreshInterval = setInterval(refreshPage, 60000);
 
     // Timeout after 4 hours of no user activity
     const timeoutDuration = 4 * 60 * 60 * 1000; // 4 hours in milliseconds
