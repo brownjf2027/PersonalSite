@@ -121,7 +121,11 @@
 <!--        <h6> {{ picks }} </h6>-->
         <div class="row" style="justify-content: center; align-items: center;">
             {% for game in games %}
-            <div class="card rounded-3 p-0 m-1">
+            {% if game.game.gameState == "live" %}
+            <div class="card rounded-3 shadow p-0 m-1" style="border-color: #0DCAF0; border-width: medium;">
+            {% else %}
+            <div class="card rounded-3 shadow p-0 m-1">
+            {% endif %}
                 <div class="row">
                     <div class="container-card rounded-3 px-3 m-1">
                         <div class="game-header">
@@ -135,7 +139,7 @@
                                 <p class="card-text">{{ game.game.startTime }} {{ game.game.network }}</p>
                                 {% else %}
                                 <!-- live -->
-                                <p class="card-text">P{{ game.game.currentPeriod }} {{ game.game.contestClock }} {{
+                                <p class="card-text" style="font-weight: bolder; text-decoration: underline;">{{ game.game.currentPeriod }} {{ game.game.contestClock }} {{
                                     game.game.network }}</p>
                                 {% endif %}
                                 {% endif %}
