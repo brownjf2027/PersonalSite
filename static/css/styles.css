@@ -4,6 +4,15 @@
   /* Define other custom variables for dark mode if needed */
 }
 
+@supports ((position: -webkit-sticky) or (position: sticky)) {
+  .sticky-top2 {
+    position: -webkit-sticky;
+    position: sticky;
+    margin-top: 56x;
+    z-index: 1019;
+  }
+}
+
 /* Media query for dark mode */
 @media (prefers-color-scheme: dark) {
   /* Override Bootstrap variables for dark mode */
@@ -192,7 +201,7 @@ text-decoration-color: #fff;
 }
 
 .card {
-    width: 12rem;
+    width: 11rem;
 }
 
 .card-text {

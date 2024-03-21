@@ -2,6 +2,7 @@ import datetime
 import json
 import logging
 from os import environ
+from datetime import datetime
 
 import openpyxl
 from ncaa import get_games
@@ -289,7 +290,25 @@ def ncaa_scoreboard():
     my_picks_str = request.args.get('picks')
     my_picks = my_picks_str.split(',') if my_picks_str else []
     games = get_games()
+    finished_games = []
+    correct = 0
+    incorrect = 0
+    all_done = False
+
     for game in games:
+        if game['game']['gameState'] == "final":
+            pass
+            if int(game['game']['home']['score']) > int(game['game']['away']['score']):
+                if game['game']['home']['names']['short'] in my_picks:
+                    correct += 1
+                else:
+                    incorrect += 1
+            if int(game['game']['away']['score']) > int(game['game']['home']['score']):
+                if game['game']['away']['names']['short'] in my_picks:
+                    correct += 1
+                else:
+                    incorrect += 1
+
         if game['game']['home']['score'] == "":
             game['game']['home']['score'] = 0
         else:
@@ -303,7 +322,15 @@ def ncaa_scoreboard():
         game['game']['home']['seed'] = int(game['game']['home']['seed'])
         game['game']['away']['seed'] = int(game['game']['away']['seed'])
 
-    return render_template("ncaa_scoreboard.html", picks=my_picks, games=games)
+        finished_games = [game for game in games if game['game']['gameState'] == "final"]
+        if len(finished_games) == len(games):
+            all_done = True
+
+        current_date = datetime.now().strftime('%A, %b %d')
+
+    return render_template("ncaa_scoreboard.html", picks=my_picks, games=games,
+                           finished_games=finished_games, correct=correct, incorrect=incorrect, all_done=all_done,
+                           current_date=current_date)
 
 
 # Define the filename for the JSON file
