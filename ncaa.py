@@ -1,11 +1,23 @@
 import requests
 import json
 from datetime import datetime
+import pytz
 
 
 def get_games():
-    today = datetime.today().date()
-    today = today.strftime("%m/%d")
+    # Get the current time in UTC
+    utc_now = datetime.utcnow()
+
+    # Define the time zone for Central Time
+    central_tz = pytz.timezone('America/Chicago')
+
+    # Convert UTC time to Central Time
+    central_now = utc_now.replace(tzinfo=pytz.utc).astimezone(central_tz)
+
+    # Extract only the date
+    central_today = central_now.date()
+
+    today = central_today.strftime('%A, %b %d')
 
     url = f"https://data.ncaa.com/casablanca/scoreboard/basketball-men/d1/2024/{today}/scoreboard.json"
 
