@@ -103,21 +103,20 @@
 </svg>
 
 <div class="sticky-top">
-<nav class="navbar navbar-dark py-0 navbar-expand-lg">
-    <div class="container-fluid">
-        <!--            <img src="{{ url_for('static', filename='images/jb-header.png') }}" style="margin-right: 6px; margin-left: 10px; margin-top: 3px; margin-bottom: 3px;" height="100rem">-->
-        <a id="icon" href={{url_for('ncaa')}} class="display-4 fst-italic px-3 pb-2"
-           style="color: #fff; text-decoration: none;">NCAA</a>
-        <a class="display-6 fst-italic px-3 pb-2" style="color: #fff; text-decoration: none;">MM Tracker</a>
-    </div>
-</nav>
+    <nav class="navbar navbar-dark py-0 navbar-expand-lg">
+        <div class="container-fluid">
+            <!--            <img src="{{ url_for('static', filename='images/jb-header.png') }}" style="margin-right: 6px; margin-left: 10px; margin-top: 3px; margin-bottom: 3px;" height="100rem">-->
+            <a id="icon" href={{url_for('ncaa')}} class="display-4 fst-italic px-3 pb-2"
+               style="color: #fff; text-decoration: none;">NCAA</a>
+            <a class="display-6 fst-italic px-3 pb-2" style="color: #fff; text-decoration: none;">MM Tracker</a>
+        </div>
+    </nav>
     <div class="container-expand sticky-top2 bg-white shadow"
          style="justify-content: center; align-items: center; text-align: center;">
         <h6 class="py-1" style="font-weight: bolder; text-decoration: none;">
-            {% If (correct+incorrect) > 0 %}
-            {{ "{:.0f}".format(correct/(correct+incorrect)*100) }}% <a>
-            ({{ correct }} of {{ (correct + incorrect) }})</a>
-            {% endif %}
+
+            <a>{{ correct }} of {{ (correct + incorrect) }}</a>
+
         </h6>
     </div>
 </div>
