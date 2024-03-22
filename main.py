@@ -295,6 +295,19 @@ def ncaa_scoreboard():
     incorrect = 0
     all_done = False
 
+    # Get the current time in UTC
+    utc_now = datetime.utcnow()
+
+    # Define the time zone for Central Time
+    central_tz = pytz.timezone('America/Chicago')
+
+    # Convert UTC time to Central Time
+    central_now = utc_now.replace(tzinfo=pytz.utc).astimezone(central_tz)
+
+    # Extract only the date
+    central_today = central_now.date()
+    current_date = central_today.strftime('%A, %b %d')
+
     for game in games:
         if game['game']['gameState'] == "final":
             pass
@@ -326,19 +339,19 @@ def ncaa_scoreboard():
         if len(finished_games) == len(games):
             all_done = True
 
-        # Get the current time in UTC
-        utc_now = datetime.utcnow()
-
-        # Define the time zone for Central Time
-        central_tz = pytz.timezone('America/Chicago')
-
-        # Convert UTC time to Central Time
-        central_now = utc_now.replace(tzinfo=pytz.utc).astimezone(central_tz)
-
-        # Extract only the date
-        central_today = central_now.date()
-        current_date = central_today.strftime('%A, %b %d')
-        # current_date = datetime.now().strftime('%A, %b %d')
+        # # Get the current time in UTC
+        # utc_now = datetime.utcnow()
+        #
+        # # Define the time zone for Central Time
+        # central_tz = pytz.timezone('America/Chicago')
+        #
+        # # Convert UTC time to Central Time
+        # central_now = utc_now.replace(tzinfo=pytz.utc).astimezone(central_tz)
+        #
+        # # Extract only the date
+        # central_today = central_now.date()
+        # current_date = central_today.strftime('%A, %b %d')
+        # # current_date = datetime.now().strftime('%A, %b %d')
 
     return render_template("ncaa_scoreboard.html", picks=my_picks, games=games,
                            finished_games=finished_games, correct=correct, incorrect=incorrect, all_done=all_done,
