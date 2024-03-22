@@ -3,7 +3,7 @@ import json
 import logging
 from os import environ
 from datetime import datetime
-
+import pytz
 import openpyxl
 from ncaa import get_games
 import re
@@ -326,7 +326,19 @@ def ncaa_scoreboard():
         if len(finished_games) == len(games):
             all_done = True
 
-        current_date = datetime.now().strftime('%A, %b %d')
+        # Get the current time in UTC
+        utc_now = datetime.utcnow()
+
+        # Define the time zone for Central Time
+        central_tz = pytz.timezone('America/Chicago')
+
+        # Convert UTC time to Central Time
+        central_now = utc_now.replace(tzinfo=pytz.utc).astimezone(central_tz)
+
+        # Extract only the date
+        central_today = central_now.date()
+        current_date = central_today.strftime('%A, %b %d')
+        # current_date = datetime.now().strftime('%A, %b %d')
 
     return render_template("ncaa_scoreboard.html", picks=my_picks, games=games,
                            finished_games=finished_games, correct=correct, incorrect=incorrect, all_done=all_done,
