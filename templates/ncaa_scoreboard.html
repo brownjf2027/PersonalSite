@@ -114,8 +114,11 @@
 </nav>
     <div class="container-expand sticky-top2 bg-white shadow"
          style="justify-content: center; align-items: center; text-align: center;">
-        <h6 class="py-1" style="font-weight: bolder; text-decoration: none;">{{
+        <h6 class="py-1" style="font-weight: bolder; text-decoration: none;">
+            {% If (correct+incorrect) > 0 %}
+            {{
             "{:.0f}".format(correct/(correct+incorrect)*100) }}% <a> ({{ correct }} of {{ (correct + incorrect) }})</a>
+            {% endif %}
         </h6>
     </div>
 </div>
