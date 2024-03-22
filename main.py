@@ -266,9 +266,10 @@ def ncaa():
             # Flatten the list of lists into a single list of strings
             flattened_picks = [str(item) for sublist in picks for item in sublist]
 
-            # Replace "Uconn" with "Connecticut"
+            # Replacements i.e. "Uconn" with "Connecticut"
             flattened_picks = ["Connecticut" if pick == "Uconn" else pick for pick in flattened_picks]
             flattened_picks = ["Colorado St." if pick == "Virginia/Colorado St." else pick for pick in flattened_picks]
+            flattened_picks = ["Florida Atlantic." if pick == "FAU" else pick for pick in flattened_picks]
             # Replace "State" with "St."
             flattened_picks = [re.sub(r'\bState\b', 'St.', pick) for pick in flattened_picks]
 
