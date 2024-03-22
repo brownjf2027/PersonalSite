@@ -267,13 +267,14 @@ def ncaa():
             flattened_picks = [str(item) for sublist in picks for item in sublist]
 
             # Replacements i.e. "Uconn" with "Connecticut"
-            flattened_picks = ["Connecticut" if pick == "Uconn" else pick for pick in flattened_picks]
+            flattened_picks = ["UConn" if pick == "Uconn" else pick for pick in flattened_picks]
             flattened_picks = ["Colorado St." if pick == "Virginia/Colorado St." else pick for pick in flattened_picks]
-            flattened_picks = ["Florida Atlantic." if pick == "FAU" else pick for pick in flattened_picks]
+            flattened_picks = ["Saint Mary's (CA)" if pick == "Saint Mary's" else pick for pick in flattened_picks]
+            flattened_picks = ["Fla. Atlantic" if pick == "FAU" else pick for pick in flattened_picks]
+            print(flattened_picks)
             # Replace "State" with "St."
-            # flattened_picks = [re.sub(r'\bState\b', 'St.', pick) for pick in flattened_picks]
-            # Had to update Regex as it was also changing St. for 'Saint' vs. 'State' now it only does it of St. isn't the initial word
-            flattened_picks = [re.sub(r'(?<!\bSt\.)\bSt\.\s', 'State ', pick) for pick in flattened_picks]
+            flattened_picks = [re.sub(r'\bState\b', 'St.', pick) for pick in flattened_picks]
+
             # Join picks into a comma-separated string
             picks_str = ",".join(flattened_picks)
 
