@@ -123,13 +123,13 @@
 
 {% if not all_done %}
 <section id="title" class="section-background">
-    <div class="container px-4 mb-5" style="justify-content: center; align-items: center; align-text: center;">
+    <div class="container px-auto mx-auto mb-5" style="justify-content: center; align-items: center; align-text: center;">
         <h1 class="board_header mt-3" style="text-align: center;">{{ games[0].game.bracketRound }}</h1>
         <h6 class="" style="text-align: center;"> {{ current_date }} </h6>
         <!--        <h6> {{ picks }} </h6>-->
         <h6>
         </h6>
-        <div class="row" style="justify-content: center; align-items: center;">
+        <div class="row px-0" style="justify-content: center; align-items: center;">
             {% for game in games %}
             {% if game not in finished_games %}
             {% if game.game.gameState == "live" %}
@@ -238,7 +238,7 @@
 {% endif %}
 
 <section class="finished-games" style="">
-    <div class="container px-4 mb-5" style="justify-content: center; align-items: center;">
+    <div class="container px-auto mx-auto mb-5" style="justify-content: center; align-items: center;">
         <h1 class="board_header mt-3" style="text-align: center;"> Results </h1>
         <!--        <h6> {{ picks }} </h6>-->
         <h6>

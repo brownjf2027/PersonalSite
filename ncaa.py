@@ -17,7 +17,7 @@ def get_games():
     # Extract only the date
     central_today = central_now.date()
 
-    today = central_today.strftime('%A, %b %d')
+    today = central_today.strftime("%m/%d")
 
     url = f"https://data.ncaa.com/casablanca/scoreboard/basketball-men/d1/2024/{today}/scoreboard.json"
 
