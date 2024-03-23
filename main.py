@@ -244,8 +244,8 @@ def ncaa():
             sheet = wb.active
 
             # Grab items from columns D (column 4) and H (column 8) starting at the specified rows
-            column_data_D = [sheet.cell(row=i, column=4).value for i in range(18, 37)]
-            column_data_H = [sheet.cell(row=i, column=8).value for i in range(18, 37)]
+            column_data_D = [sheet.cell(row=i, column=4).value for i in range(9, 20)]
+            column_data_H = [sheet.cell(row=i, column=8).value for i in range(9, 20)]
             column_data = zip(column_data_D, column_data_H)
             # Remove numbering and store in a list
             cleaned_column_data = []
