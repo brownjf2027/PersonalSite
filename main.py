@@ -335,12 +335,12 @@ def ncaa_scoreboard():
         else:
             game['game']['away']['score'] = int(game['game']['away']['score'])
 
-        game['game']['home']['seed'] = int(game['game']['home']['seed'])
-        game['game']['away']['seed'] = int(game['game']['away']['seed'])
+        # game['game']['home']['seed'] = int(game['game']['home']['seed'])
+        # game['game']['away']['seed'] = int(game['game']['away']['seed'])
 
         finished_games = [game for game in games if game['game']['gameState'] == "final"]
         if len(finished_games) == len(games):
-            all_done = True
+            all_done = Truer
 
         # # Get the current time in UTC
         # utc_now = datetime.utcnow()
