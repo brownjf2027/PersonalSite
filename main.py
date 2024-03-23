@@ -334,7 +334,7 @@ def ncaa_scoreboard():
             game['game']['away']['score'] = 0
         else:
             game['game']['away']['score'] = int(game['game']['away']['score'])
-
+# edits
         # game['game']['home']['seed'] = int(game['game']['home']['seed'])
         # game['game']['away']['seed'] = int(game['game']['away']['seed'])
 
