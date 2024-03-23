@@ -310,7 +310,7 @@ def ncaa_scoreboard():
     # Extract only the date
     central_today = central_now.date()
     current_date = central_today.strftime('%A, %b %d')
-    games = [game for game in games if game['game']['bracketRoumd'] != ""]
+    games = [game for game in games if game['game']['bracketRound'] != ""]
     for game in games:
         if game['game']['gameState'] == "final":
             pass
