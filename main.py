@@ -210,7 +210,7 @@ def add_todo(todo, description):
                            logged_in=current_user.is_authenticated)
 
 
-@app.route('/delete_todo/<string:todo_id>', methods=["DELETE"])
+@app.route('/delete_todo/<string:todo_id>', methods=["GET"])
 def delete_todo(todo_id):
     todos.remove_item(todo_id)
     all_posts = Post.query.order_by(Post.date.desc()).all()
