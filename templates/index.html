@@ -121,7 +121,7 @@
                                 </div>
                             </a>
                             {% if logged_in %}
-                                <a href="{{ url_for('delete_todo', todo_id=todo['title']) }}">del</a>
+                                <a class='btn-primary' href="{{ url_for('delete_todo', todo_id=todo['title']) }}">Delete</a>
                             {% endif %}
                         </li>
                         {% endfor %}
