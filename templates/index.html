@@ -120,6 +120,9 @@
                                     <small class="text-body-secondary">{{ todo['description'] }}</small>
                                 </div>
                             </a>
+                            {% if logged_in %}
+                                <a href="{{ url_for('delete_todo', todo=todo['title']) }}">del</a>
+                            {% endif %}
                         </li>
                         {% endfor %}
                     </ul>

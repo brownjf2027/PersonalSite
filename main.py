@@ -5,6 +5,8 @@ from os import environ
 from datetime import datetime
 import pytz
 import openpyxl
+
+import todos
 from ncaa import get_games
 import re
 
@@ -195,6 +197,24 @@ def home():
     todo_list = get_todo_list()
     # all_images = Post.query.order_by(Image.id.desc()).all()
 
+    return render_template("index.html", todo_list=todo_list, all_posts=all_posts,
+                           logged_in=current_user.is_authenticated)
+
+
+@app.route('/add_todo', methods=["GET"])
+def delete_todo(todo, description):
+    todos.add_item(todo, description)
+    all_posts = Post.query.order_by(Post.date.desc()).all()
+    todo_list = get_todo_list()
+    return render_template("index.html", todo_list=todo_list, all_posts=all_posts,
+                           logged_in=current_user.is_authenticated)
+
+
+@app.route('/delete_todo', methods=["GET"])
+def delete_todo(todo):
+    todos.remove_item(todo)
+    all_posts = Post.query.order_by(Post.date.desc()).all()
+    todo_list = get_todo_list()
     return render_template("index.html", todo_list=todo_list, all_posts=all_posts,
                            logged_in=current_user.is_authenticated)
 
