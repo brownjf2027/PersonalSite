@@ -295,7 +295,7 @@ def ncaa():
             # Replace "State" with "St."
             flattened_picks = [re.sub(r'\bState\b', 'St.', pick) for pick in flattened_picks]
             flattened_picks = ["NC State" if pick == "NC St." else pick for pick in flattened_picks]
-            flattened_picks = [pick.strip() for pick in flattened_picks]
+            flattened_picks = [" ".join(pick.split()) for pick in flattened_picks]
 
             # Join picks into a comma-separated string
             picks_str = ",".join(flattened_picks)
