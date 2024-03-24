@@ -291,11 +291,13 @@ def ncaa():
             flattened_picks = ["Colorado St." if pick == "Virginia/Colorado St." else pick for pick in flattened_picks]
             flattened_picks = ["Saint Mary's (CA)" if pick == "Saint Mary's" else pick for pick in flattened_picks]
             flattened_picks = ["Fla. Atlantic" if pick == "FAU" else pick for pick in flattened_picks]
-            print(flattened_picks)
+
             # Replace "State" with "St."
             flattened_picks = [re.sub(r'\bState\b', 'St.', pick) for pick in flattened_picks]
             flattened_picks = ["NC State" if pick == "NC St." else pick for pick in flattened_picks]
-            flattened_picks = [" ".join(pick.split()) for pick in flattened_picks]
+            print(f"picks pre-strip function={flattened_picks}")
+            flattened_picks = [pick.strip() for pick in flattened_picks]
+            print(f"after stripping: {flattened_picks}")
 
             # Join picks into a comma-separated string
             picks_str = ",".join(flattened_picks)
