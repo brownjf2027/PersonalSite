@@ -361,7 +361,7 @@ def ncaa_scoreboard():
 
         finished_games = [game for game in games if game['game']['gameState'] == "final"]
         if len(finished_games) == len(games):
-            all_done = Truer
+            all_done = True
 
         # # Get the current time in UTC
         # utc_now = datetime.utcnow()
