@@ -22,6 +22,7 @@ from wtforms import StringField, SubmitField, TextAreaField, DateField, HiddenFi
 from wtforms.validators import DataRequired
 from flask_ckeditor import CKEditor, CKEditorField
 
+
 SALT_ROUNDS = 16
 
 # class Base(DeclarativeBase):
