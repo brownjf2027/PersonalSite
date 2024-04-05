@@ -1,5 +1,31 @@
 {% extends "base.html" %}
 {% block content %}
+<!-- Modal -->
+        <div class="modal fade" id="todoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add Todo</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form id="todoForm">
+                            <div class="form-group">
+                                <label for="todoTitle">Title:</label>
+                                <input type="text" class="form-control" id="todoTitle" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="todoDescription">Description:</label>
+                                <textarea class="form-control" id="todoDescription" rows="3"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="submitTodo">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 <main class="container">
     <div id="big-box" class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
@@ -20,7 +46,7 @@
                         <h6 class="fst-italic mb-0">Most Recent</h6>
                         <h3 class="mb-1 text-white">{{ all_posts[0].title }}</h3>
                         <!--          <div class="mb-1 text-body-secondary">Mar 2024</div>-->
-                        <p class="card-text mb-auto">{{ all_posts[0].blurb }}</p>
+                        <p class="mb-auto colored-background-text">{{ all_posts[0].blurb }}</p>
                         <a href="#latest" class="icon-link gap-1 icon-link-hover stretched-link">
                             Continue below
                             <svg class="bi">
@@ -108,7 +134,14 @@
         <div class="col-md-4">
             <div class="position-sticky" style="top: 2rem;">
                 <div>
-                    <h4 class="fst-italic">To Do Items</h4>
+                    <h4 class="fst-italic">To Do Items
+                        {% if logged_in %}
+                        <!-- Button to trigger modal -->
+                        <button class="fa fa-solid fa-plus ps-1" style="color: #c06c84; border: 0px; background: transparent" data-bs-toggle="modal" data-bs-target="#todoModal"></button>
+                        {% endif %}
+                    </h4>
+
+
                     <ul class="list-unstyled">
                         {% for todo in todo_list %}
                         <li>

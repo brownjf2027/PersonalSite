@@ -2,11 +2,11 @@ import json
 
 
 # Function to add a new item to the todo list
-def add_item(title, description):
+def add_item(js_data):
     with open('static/files/todo.json', 'r') as file:
         todo_list = json.load(file)
 
-    new_item = {"title": title, "description": description}
+    new_item = js_data
     todo_list.append(new_item)
 
     with open('static/files/todo.json', 'w') as file:

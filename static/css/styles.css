@@ -152,19 +152,6 @@ text-decoration-color: #fff;
   display: block !important;
 }
 
-/* Required Bootstrap imports */
-@import "functions";
-@import "variables";
-@import "variables-dark";
-@import "maps";
-@import "mixins";
-@import "utilities";
-
-/* Remainder of Bootstrap imports */
-@import "root";
-@import "reboot";
-/* etc */
-
 
 [data-bs-theme="dark"] {
   --bs-body-color: var(--bs-white);

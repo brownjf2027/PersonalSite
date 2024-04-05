@@ -207,9 +207,10 @@ def home():
                            logged_in=current_user.is_authenticated)
 
 
-@app.route('/add_todo', methods=["GET"])
-def add_todo(todo, description):
-    todos.add_item(todo, description)
+@app.route('/add_todo', methods=["POST"])
+def add_todo():
+    todo_data = request.json
+    todos.add_item(todo_data)
     all_posts = Post.query.order_by(Post.date.desc()).all()
     todo_list = get_todo_list()
     return render_template("index.html", todo_list=todo_list, all_posts=all_posts,
