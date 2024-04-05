@@ -20,6 +20,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from werkzeug.security import check_password_hash
 from wtforms import StringField, SubmitField, TextAreaField, DateField, HiddenField, FileField
 from wtforms.validators import DataRequired
+from flask_ckeditor import CKEditor, CKEditorField
 
 SALT_ROUNDS = 16
 
@@ -31,6 +32,9 @@ app = Flask(__name__)
 app.logger.setLevel(logging.DEBUG)
 bootstrap = Bootstrap5(app)
 app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
+app.config['CKEDITOR_ENABLE_CODESNIPPET'] = True
+ckeditor = CKEditor(app)
+
 # CONNECT TO DB
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
@@ -94,9 +98,10 @@ class PostForm(FlaskForm):
     post_id = HiddenField('Post ID:')
     date = DateField('Date')
     title = StringField('Title:', validators=[DataRequired()])
-    blurb = TextAreaField('Blurb:', validators=[DataRequired()])
-    body = TextAreaField('Body:', validators=[DataRequired()], render_kw={"style": "height: 250px;"})
-    submit = SubmitField("Submit Post")
+    blurb = TextAreaField('Blurb:', validators=[DataRequired()], render_kw={"style": "width: 500px;"})
+    body = CKEditorField(label="Body:", validators=[DataRequired()], render_kw={"style": "height: 250px;"})
+    # body = TextAreaField('Body:', validators=[DataRequired()], render_kw={"style": "height: 250px;"})
+    submit = SubmitField("Submit Post", render_kw={"class": "btn btn-primary"})
 
 
 class XlForm(FlaskForm):

@@ -15,18 +15,31 @@
                 {% endif %}
                 {% endwith %}
 
-            {{ render_form(form) }}
+            <form method="post">
+                {{ form.csrf_token }}
+                {{ form.date.label }}<br>
+                {{ form.date }}<br><br>
+                {{ form.title.label }}<br>
+                {{ form.title }}<br><br>
+                {{ form.blurb.label }}<br>
+                {{ form.blurb }}<br><br>
+                {{ form.body.label }}<br>
+                {{ form.body }}
+                <br>
+                {{ form.submit }}
+            </form>
 
-            <p>Image:</p>
-            <input type="file" name="image_file">
+<!--            <p>Image:</p>-->
+<!--            <input type="file" name="image_file">-->
 
-            <p>Snippet:</p>
-            <textarea id="snip" name="snip" rows="4" cols="73">
-            </textarea>
+<!--            <p>Snippet:</p>-->
+<!--            <textarea id="snip" name="snip" rows="4" cols="73">-->
+<!--            </textarea>-->
 
         </div>
     </div>
 </div>
-
+{{ ckeditor.load() }}
+{{ ckeditor.config(name='body') }}
 
 {% endblock %}
