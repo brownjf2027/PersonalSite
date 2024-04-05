@@ -119,6 +119,7 @@
                 <p class="mt-2"><em>{{ all_posts[1].blurb }} </em></p>
                 <p class="blog-post-meta"> {{ all_posts[1].body | safe}} </p>
             </article>
+            <hr>
             {% endif %}
             {% if all_posts[2] %}
             <article class="blog-post">
@@ -126,6 +127,15 @@
                                 <p class="blog-post-meta"> {{ all_posts[2].date.strftime('%b %d %Y') }}</p>
                 <p class="mt-2"><em>{{ all_posts[2].blurb }} </em></p>
                 <p class="blog-post-meta"> {{ all_posts[2].body | safe}} </p>
+            </article>
+            <hr>
+            {% endif %}
+            {% if all_posts[3] %}
+            <article class="blog-post">
+                <h2 class="display-5 link-body-emphasis mb-1"> {{ all_posts[3].title }} </h2>
+                                <p class="blog-post-meta"> {{ all_posts[3].date.strftime('%b %d %Y') }}</p>
+                <p class="mt-2"><em>{{ all_posts[3].blurb }} </em></p>
+                <p class="blog-post-meta"> {{ all_posts[3].body | safe}} </p>
             </article>
             {% endif %}
 
