@@ -1,14 +1,14 @@
 [
     {
-        "title": "Project page",
-        "description": "Show samples of other coding projects: Geocoding and automatic customer mapping, custom apps for work, games, etc."
-    },
-    {
         "title": "Fine tune CSS styles and design",
         "description": "Will most likely be on-going for a bit."
     },
     {
         "title": "2023 Stats for Sleeper Tiers app",
         "description": "Matplot practice & potentially Azure AI/Machine Learning"
+    },
+    {
+        "title": "Show Additional Projects",
+        "description": "Show samples of projects: Geocoding and auto-mapping with google API, Coverage Reports, Performance Analytics, Seaborn/Matplot samples, etc."
     }
 ]

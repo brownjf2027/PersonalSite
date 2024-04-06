@@ -24,7 +24,7 @@ from flask_ckeditor import CKEditor, CKEditorField
 
 
 SALT_ROUNDS = 16
-
+TODO_FILE = 'static/files/todo.json'
 # class Base(DeclarativeBase):
 #     pass
 
@@ -214,8 +214,7 @@ def add_todo():
     todos.add_item(todo_data)
     all_posts = Post.query.order_by(Post.date.desc()).all()
     todo_list = get_todo_list()
-    return render_template("index.html", todo_list=todo_list, all_posts=all_posts,
-                           logged_in=current_user.is_authenticated)
+    return render_template("added_todo.html", todo_list=todo_list, logged_in=current_user.is_authenticated)
 
 
 @app.route('/delete_todo/<string:todo_id>', methods=["GET"])
@@ -223,8 +222,7 @@ def delete_todo(todo_id):
     todos.remove_item(todo_id)
     all_posts = Post.query.order_by(Post.date.desc()).all()
     todo_list = get_todo_list()
-    return render_template("index.html", todo_list=todo_list, all_posts=all_posts,
-                           logged_in=current_user.is_authenticated)
+    return redirect(url_for('home', logged_in=current_user.is_authenticated))
 
 
 @app.route('/logout', methods=["GET"])
@@ -391,10 +389,6 @@ def ncaa_scoreboard():
     return render_template("ncaa_scoreboard.html", picks=my_picks, games=games,
                            finished_games=finished_games, correct=correct, incorrect=incorrect, all_done=all_done,
                            current_date=current_date)
-
-
-# Define the filename for the JSON file
-TODO_FILE = 'static/files/todo.json'
 
 
 def load_todo_list():

@@ -285,24 +285,26 @@
 </script>
 <script>
     $(document).ready(function() {
-        $('#submitTodo').click(function() {
-            var title = $('#todoTitle').val();
-            var description = $('#todoDescription').val();
-            $.ajax({
-                type: "POST",
-                url: "/add_todo",
-                data: JSON.stringify({title: title, description: description}),
-                contentType: 'application/json',
-                success: function(response) {
-                    alert('Todo added successfully!');
-                    $('#todoModal').modal('hide');
-                },
-                error: function(error) {
-                    console.log(error);
-                }
-            });
+    $('#submitTodo').click(function() {
+        var title = $('#todoTitle').val();
+        var description = $('#todoDescription').val();
+        $.ajax({
+            type: "POST",
+            url: "/add_todo",
+            data: JSON.stringify({title: title, description: description}),
+            contentType: 'application/json',
+            success: function(response) {
+                // Assuming response contains updated todo list HTML
+                $('#todoListContainer').html(response);
+                $('#todoModal').modal('hide');
+            },
+            error: function(error) {
+                console.log(error);
+            }
         });
     });
+});
+
 </script>
 </body>
 </html>

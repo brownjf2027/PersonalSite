@@ -1,0 +1,17 @@
+<ul class="list-unstyled" id="todoListContainer">
+    {% for todo in todo_list %}
+    <li>
+        <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top"
+           href="#">
+            <div class="col-lg-8">
+                <h6 class="mb-0">{{ todo['title'] }}
+                    {% if logged_in %}
+                        <button class='fa fa-solid fa-minus' style="color: #c06c84; border: 0px; background: transparent" onclick="location.href='{{ url_for('delete_todo', todo_id=todo['title']) }}'"></button>
+                    {% endif %}
+                </h6>
+                <small class="text-body-secondary">{{ todo['description'] }}</small>
+            </div>
+        </a>
+    </li>
+    {% endfor %}
+</ul>
