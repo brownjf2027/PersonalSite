@@ -34,6 +34,7 @@ app.logger.setLevel(logging.DEBUG)
 bootstrap = Bootstrap5(app)
 app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
 app.config['CKEDITOR_ENABLE_CODESNIPPET'] = True
+app.config['CKEDITOR_CODE_THEME'] = 'monokai_sublime'
 ckeditor = CKEditor(app)
 
 # CONNECT TO DB
