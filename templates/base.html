@@ -170,7 +170,6 @@
                             {% endif %}
                             {% if logged_in: %}
                             <li><a class="dropdown-item" href="{{ url_for('post') }}">Add Post</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('add_todo') }}">Add ToDo</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -189,7 +188,7 @@
 {% block content %}
 {% endblock %}
 
-<footer class="my-auto bg-white">
+<footer class="my-auto bg-transparent" style="background: transparent;">
     <div class="container border-top"></div>
         <p class="text-center text-body-secondary my-2">Built with <a href="https://getbootstrap.com/">Bootstrap</a></p>
     </div>
