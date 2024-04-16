@@ -103,7 +103,7 @@
 </svg>
 
 <div class="container">
-    <nav class="navbar navbar-dark rounded-2 py-0 navbar-expand-lg">
+    <nav class="navbar navbar-dark py-0 navbar-expand-lg" style="border-radius: 0 0 6px 6px">
         <div class="container-fluid">
 <!--            <img src="{{ url_for('static', filename='images/jb-header.png') }}" style="margin-right: 6px; margin-left: 10px; margin-top: 3px; margin-bottom: 3px;" height="100rem">-->
             <a id="icon" href="/" class="display-4 fst-italic px-3 pb-2" style="color: #fff; text-decoration: none;">JB</a>
@@ -128,7 +128,7 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="https://sleepertiers.azurewebsites.net/">SleeperTiers</a>
                             </li>
-                            <li><a class="dropdown-item" href="#">Additional Projects(upcoming)</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('work') }}">Additional Projects</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">

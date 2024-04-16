@@ -254,141 +254,124 @@ def login():
     return render_template("login.html", logged_in=current_user.is_authenticated)
 
 
-@app.route("/ncaa", methods=["GET", "POST"])
-def ncaa():
-    form = XlForm()
-    picks = []
-    games = []
-    if form.validate_on_submit():
-        xl_file = form.excel_doc.data
+# @app.route("/ncaa", methods=["GET", "POST"])
+# def ncaa():
+#     form = XlForm()
+#     picks = []
+#     games = []
+#     if form.validate_on_submit():
+#         xl_file = form.excel_doc.data
+#
+#         try:
+#             # Open the Excel file
+#             wb = openpyxl.load_workbook(xl_file)
+#
+#             # Select the active worksheet
+#             sheet = wb.active
+#
+#             # Grab items from columns D (column 4) and H (column 8) starting at the specified rows
+#             column_data_D = [sheet.cell(row=i, column=4).value for i in range(9, 20)]
+#             column_data_H = [sheet.cell(row=i, column=8).value for i in range(9, 20)]
+#             column_data = zip(column_data_D, column_data_H)
+#             # Remove numbering and store in a list
+#             cleaned_column_data = []
+#             for row in column_data:
+#                 cleaned_row = []
+#                 for item in row:
+#                     if isinstance(item, str) and '. ' in item:
+#                         cleaned_item = item.split('. ')[1]
+#                     else:
+#                         cleaned_item = item
+#                     cleaned_row.append(cleaned_item)
+#                 cleaned_column_data.append(cleaned_row)
+#
+#             picks = cleaned_column_data
+#
+#             import re
+#
+#             # Flatten the list of lists into a single list of strings
+#             flattened_picks = [str(item) for sublist in picks for item in sublist]
+#
+#             # Replacements i.e. "Uconn" with "Connecticut"
+#             flattened_picks = ["UConn" if pick == "Uconn" else pick for pick in flattened_picks]
+#             flattened_picks = ["Colorado St." if pick == "Virginia/Colorado St." else pick for pick in flattened_picks]
+#             flattened_picks = ["Saint Mary's (CA)" if pick == "Saint Mary's" else pick for pick in flattened_picks]
+#             flattened_picks = ["Fla. Atlantic" if pick == "FAU" else pick for pick in flattened_picks]
+#
+#             # Replace "State" with "St."
+#             flattened_picks = [re.sub(r'\bState\b', 'St.', pick) for pick in flattened_picks]
+#             flattened_picks = ["NC State" if pick == "NC St." else pick for pick in flattened_picks]
+#             print(f"picks pre-strip function={flattened_picks}")
+#             flattened_picks = [pick.strip() for pick in flattened_picks]
+#             print(f"after stripping: {flattened_picks}")
+#
+#             # Join picks into a comma-separated string
+#             picks_str = ",".join(flattened_picks)
+#
+#             return redirect(url_for("ncaa_scoreboard", picks=picks_str))
+#
+#         except Exception as e:
+#             flash("Error.")
+#             print(f"Exception: {e}")
+#             return render_template("ncaa.html", form=form)
+#
+#     return render_template("ncaa.html", form=form)
 
-        try:
-            # Open the Excel file
-            wb = openpyxl.load_workbook(xl_file)
 
-            # Select the active worksheet
-            sheet = wb.active
-
-            # Grab items from columns D (column 4) and H (column 8) starting at the specified rows
-            column_data_D = [sheet.cell(row=i, column=4).value for i in range(9, 20)]
-            column_data_H = [sheet.cell(row=i, column=8).value for i in range(9, 20)]
-            column_data = zip(column_data_D, column_data_H)
-            # Remove numbering and store in a list
-            cleaned_column_data = []
-            for row in column_data:
-                cleaned_row = []
-                for item in row:
-                    if isinstance(item, str) and '. ' in item:
-                        cleaned_item = item.split('. ')[1]
-                    else:
-                        cleaned_item = item
-                    cleaned_row.append(cleaned_item)
-                cleaned_column_data.append(cleaned_row)
-
-            picks = cleaned_column_data
-
-            import re
-
-            # Flatten the list of lists into a single list of strings
-            flattened_picks = [str(item) for sublist in picks for item in sublist]
-
-            # Replacements i.e. "Uconn" with "Connecticut"
-            flattened_picks = ["UConn" if pick == "Uconn" else pick for pick in flattened_picks]
-            flattened_picks = ["Colorado St." if pick == "Virginia/Colorado St." else pick for pick in flattened_picks]
-            flattened_picks = ["Saint Mary's (CA)" if pick == "Saint Mary's" else pick for pick in flattened_picks]
-            flattened_picks = ["Fla. Atlantic" if pick == "FAU" else pick for pick in flattened_picks]
-
-            # Replace "State" with "St."
-            flattened_picks = [re.sub(r'\bState\b', 'St.', pick) for pick in flattened_picks]
-            flattened_picks = ["NC State" if pick == "NC St." else pick for pick in flattened_picks]
-            print(f"picks pre-strip function={flattened_picks}")
-            flattened_picks = [pick.strip() for pick in flattened_picks]
-            print(f"after stripping: {flattened_picks}")
-
-            # Join picks into a comma-separated string
-            picks_str = ",".join(flattened_picks)
-
-            return redirect(url_for("ncaa_scoreboard", picks=picks_str))
-
-        except Exception as e:
-            flash("Error.")
-            print(f"Exception: {e}")
-            return render_template("ncaa.html", form=form)
-
-    return render_template("ncaa.html", form=form)
-
-
-@app.route("/ncaa-scoreboard/", methods=["GET", "POST"])
-def ncaa_scoreboard():
-    my_picks_str = request.args.get('picks')
-    my_picks = my_picks_str.split(',') if my_picks_str else []
-    games = get_games()
-    finished_games = []
-    correct = 0
-    incorrect = 0
-    all_done = False
-
-    # Get the current time in UTC
-    utc_now = datetime.utcnow()
-
-    # Define the time zone for Central Time
-    central_tz = pytz.timezone('America/Chicago')
-
-    # Convert UTC time to Central Time
-    central_now = utc_now.replace(tzinfo=pytz.utc).astimezone(central_tz)
-
-    # Extract only the date
-    central_today = central_now.date()
-    current_date = central_today.strftime('%A, %b %d')
-    games = [game for game in games if game['game']['bracketRound'] != ""]
-    for game in games:
-        if game['game']['gameState'] == "final":
-            pass
-            if int(game['game']['home']['score']) > int(game['game']['away']['score']):
-                if game['game']['home']['names']['short'] in my_picks:
-                    correct += 1
-                else:
-                    incorrect += 1
-            if int(game['game']['away']['score']) > int(game['game']['home']['score']):
-                if game['game']['away']['names']['short'] in my_picks:
-                    correct += 1
-                else:
-                    incorrect += 1
-
-        if game['game']['home']['score'] == "":
-            game['game']['home']['score'] = 0
-        else:
-            game['game']['home']['score'] = int(game['game']['home']['score'])
-
-        if game['game']['away']['score'] == "":
-            game['game']['away']['score'] = 0
-        else:
-            game['game']['away']['score'] = int(game['game']['away']['score'])
-# edits
-        # game['game']['home']['seed'] = int(game['game']['home']['seed'])
-        # game['game']['away']['seed'] = int(game['game']['away']['seed'])
-
-        finished_games = [game for game in games if game['game']['gameState'] == "final"]
-        if len(finished_games) == len(games):
-            all_done = True
-
-        # # Get the current time in UTC
-        # utc_now = datetime.utcnow()
-        #
-        # # Define the time zone for Central Time
-        # central_tz = pytz.timezone('America/Chicago')
-        #
-        # # Convert UTC time to Central Time
-        # central_now = utc_now.replace(tzinfo=pytz.utc).astimezone(central_tz)
-        #
-        # # Extract only the date
-        # central_today = central_now.date()
-        # current_date = central_today.strftime('%A, %b %d')
-        # # current_date = datetime.now().strftime('%A, %b %d')
-
-    return render_template("ncaa_scoreboard.html", picks=my_picks, games=games,
-                           finished_games=finished_games, correct=correct, incorrect=incorrect, all_done=all_done,
-                           current_date=current_date)
+# @app.route("/ncaa-scoreboard/", methods=["GET", "POST"])
+# def ncaa_scoreboard():
+#     my_picks_str = request.args.get('picks')
+#     my_picks = my_picks_str.split(',') if my_picks_str else []
+#     games = get_games()
+#     finished_games = []
+#     correct = 0
+#     incorrect = 0
+#     all_done = False
+#
+#     # Get the current time in UTC
+#     utc_now = datetime.utcnow()
+#
+#     # Define the time zone for Central Time
+#     central_tz = pytz.timezone('America/Chicago')
+#
+#     # Convert UTC time to Central Time
+#     central_now = utc_now.replace(tzinfo=pytz.utc).astimezone(central_tz)
+#
+#     # Extract only the date
+#     central_today = central_now.date()
+#     current_date = central_today.strftime('%A, %b %d')
+#     games = [game for game in games if game['game']['bracketRound'] != ""]
+#     for game in games:
+#         if game['game']['gameState'] == "final":
+#             pass
+#             if int(game['game']['home']['score']) > int(game['game']['away']['score']):
+#                 if game['game']['home']['names']['short'] in my_picks:
+#                     correct += 1
+#                 else:
+#                     incorrect += 1
+#             if int(game['game']['away']['score']) > int(game['game']['home']['score']):
+#                 if game['game']['away']['names']['short'] in my_picks:
+#                     correct += 1
+#                 else:
+#                     incorrect += 1
+#
+#         if game['game']['home']['score'] == "":
+#             game['game']['home']['score'] = 0
+#         else:
+#             game['game']['home']['score'] = int(game['game']['home']['score'])
+#
+#         if game['game']['away']['score'] == "":
+#             game['game']['away']['score'] = 0
+#         else:
+#             game['game']['away']['score'] = int(game['game']['away']['score'])
+#
+#         finished_games = [game for game in games if game['game']['gameState'] == "final"]
+#         if len(finished_games) == len(games):
+#             all_done = True
+#
+#     return render_template("ncaa_scoreboard.html", picks=my_picks, games=games,
+#                            finished_games=finished_games, correct=correct, incorrect=incorrect, all_done=all_done,
+#                            current_date=current_date)
 
 
 def load_todo_list():
@@ -418,6 +401,12 @@ def add_todo_item(title, description):
 def get_todo_list():
     """Get the entire to-do list."""
     return load_todo_list()
+
+
+@app.route('/work', methods=['GET'])
+def work():
+
+    return render_template("work.html", logged_in=current_user.is_authenticated)
 
 
 if __name__ == "__main__":

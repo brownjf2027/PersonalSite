@@ -6,9 +6,5 @@
     {
         "title": "2023 Stats for Sleeper Tiers app",
         "description": "Matplot practice & potentially Azure AI/Machine Learning"
-    },
-    {
-        "title": "Show Additional Projects",
-        "description": "Show samples of projects: Geocoding and auto-mapping with google API, Coverage Reports, Performance Analytics, Seaborn/Matplot samples, etc."
     }
 ]
